@@ -33,8 +33,23 @@
       #launch-preview [hidden]{display:none!important}
       @media(max-width:700px){.launch-shell{padding:22px}.launch-brand small{display:none}.launch-copy{width:100%;padding-top:28px}.launch-art{opacity:.22;width:100%;right:-20%;top:160px}.launch-route{gap:20px;flex-wrap:wrap}#launch-preview h1{font-size:88px}.launch-tagline{font-size:20px}}
       @media(max-height:720px) and (min-width:701px){.launch-copy{padding-top:24px;padding-bottom:5px}#launch-preview h1{font-size:90px;margin:20px 0}.launch-brand{padding-bottom:15px}.launch-description{margin:12px 0}.launch-art{top:100px}}
+      /* Intrinsic preview flow mirrors the menu; no engine or font download. */
+      #launch-preview .launch-shell{min-height:100%;overflow:visible;padding:clamp(18px,3vh,32px) clamp(24px,6vw,120px);display:grid;grid-template-rows:auto 1fr auto;gap:clamp(16px,2.5vh,28px)}
+      #launch-preview .launch-brand{padding-bottom:clamp(14px,2.5vh,24px)}
+      #launch-preview .launch-copy{width:min(510px,55%);padding:0;align-self:center;display:flex;flex-direction:column;align-items:flex-start;gap:clamp(10px,1.5vh,16px);min-width:0}
+      #launch-preview .launch-copy>*{margin:0;max-width:100%}
+      #launch-preview h1{font-size:clamp(72px,min(10vw,14vh),138px);line-height:.9;margin:4px 0;letter-spacing:-2px}
+      #launch-preview .launch-eyebrow{line-height:1.6;letter-spacing:2px}
+      #launch-preview .launch-tagline{font-size:clamp(18px,1.5vw,23px);line-height:1.35}
+      #launch-preview .launch-description{font-size:clamp(12px,.85vw,14px);line-height:1.7}
+      #launch-preview #launch-game,#launch-preview #launch-retry{margin:0;min-width:min(235px,100%);min-height:48px;padding:16px 24px;line-height:1.5}
+      #launch-preview #launch-status{min-height:0;margin:0;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+      #launch-preview .launch-art{right:0;width:60%;max-height:calc(100vh - 140px)}
+      #launch-preview .launch-route{flex-wrap:wrap;gap:18px 28px;padding:18px 0 0;min-width:0}
+      #launch-preview .launch-route>div{min-width:0;overflow-wrap:anywhere}
+      @media(max-width:700px){#launch-preview .launch-copy{width:100%}#launch-preview .launch-art{width:90%;opacity:.22}#launch-preview .launch-route{gap:18px 24px}}
     </style>
-    <script type="module" crossorigin src="./assets/index-7Bo9pZ-d.js"></script>
+    <script type="module" crossorigin src="./assets/index-BoiWDAqb.js"></script>
   </head>
   <body>
     <section id="launch-preview" aria-label="Namma Auto game preview">
