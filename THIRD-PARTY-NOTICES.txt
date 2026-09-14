@@ -1,4 +1,5 @@
-Namma Auto includes Three.js 0.185.1 (MIT license).
+Namma Auto includes Three.js 0.185.1, including PMREM environment filtering
+(MIT license).
 
 The MIT License
 
@@ -22,9 +23,324 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-Typography uses locally available system fonts. No font requests or files are bundled.
-Vehicle geometry, street scenery and collision sounds are procedurally generated.
-The rear-auto Shankar Nag portrait is a user-selected third-party image, bundled
-locally from the supplied Google thumbnail URL. No open redistribution license
-has been verified for this image; the publisher must ensure permission to share it.
-Source: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJd2hIC0g1NRWE4JYB0ob-1JNmPHMrd3XSr5QSwJzmOXx85_zo-rPZgv8&s=10
+Typography uses system fonts and locally bundled Noto Sans Kannada (SIL Open Font
+License 1.1). The complete copyright and license notice follows and is also
+retained among the bundled font assets. No remote font requests are made.
+Font source: https://github.com/google/fonts/tree/main/ofl/notosanskannada
+
+Vehicle geometry, street scenery, rear route emblems and sounds are original
+procedural work. The emblem is text-free decoration with no human likeness and
+remains the default API. The player and all four traffic autos explicitly select
+their separate local image sets.
+
+Enhanced 3D vehicles, people, facades, pavement and drains are original procedural
+work; surface grain, road wear and mud texture are generated locally, not imported
+surface images. TVR cinema's 17.5m pylon, front-lit TVR CINEMAS sign, marquee and
+ticket counter are original geometry/sign artwork. Its five original posters use
+CGF - Colar Gold Fields, with the full title painted COLAR GOLD FIELDS (Colar, not
+Kolar). The existing Bollywood-inspired fictional faces and composition remain:
+no external poster images, actor photographs or real-film reproductions are used.
+These original posters are separate from the user-supplied third-party photograph
+described below.
+
+Selective inward bevels on vehicles, architecture and actor details, and smoother
+organic curves on people, cows and dogs, are project-authored procedural geometry.
+Authored silhouettes, outer bounds and collision footprints are preserved. Broad
+faces retain flat normals rather than pinched shading; curves retain analytic or
+correctly transformed normals. Geometry checks cover finite unit normals and
+nondegenerate refined triangles, with collapsed vehicle rounded-box strips removed
+without replacing authored normals.
+
+Physically based actor surfaces use three shared generated 1024 x 512 atlases:
+sRGB tint, linear packed height/roughness/metalness, and linear clearcoat-mask/
+clearcoat-roughness data. Opaque vehicle batches use MeshPhysicalMaterial with
+clearcoat masked to paint ONLY. Bare metal, rubber/tyre sidewalls, cloth, leather,
+skin and hair are not clearcoated, including riders sharing the vehicle batch.
+Only exposed metal is metallic. Standalone road actors and player drivers remain
+MeshStandardMaterial, using the tint and physical maps without clearcoat.
+Multiscale grain, directional metal machining, rubber pores, woven cloth, leather
+creases and fine skin pores are original procedural synthesis. Five explicit
+tile-local mip levels downsample tint in linear light, with edge-extruded gutters
+keeping material classes separate.
+
+World surfaces use four cached 512 x 512 maps per world: color and packed
+height/roughness pairs for the plaster/concrete/paving atlas and asphalt. Coarse
+angular aggregate and subtle tar-repair patches refine asphalt; concrete has
+pores, spalling and rain-streak stains. Manual mip chains area-average color in
+linear light and keep packed data linear. Wrapped gutters and per-level atlas
+sampling prevent neighboring material bleed. Vehicle and world glass use
+nonmetallic MeshPhysicalMaterial with IOR 1.5 and no transmission. These material
+refinements retain existing batches without extra geometry or draw calls; bump
+detail complements geometry normals. No imported models, scans, surface images
+or normal maps are added. The aim is more realistic procedural rendering, not
+photorealism. These surface-only refinements do not themselves alter physics
+or gameplay.
+
+Asphalt uses world-space XZ sampling with smooth domain warping and correlated
+color/height/roughness variation to break up obvious tile repeats. The 4m tile,
+existing maps and five texture reads remain; added shader arithmetic requires no
+new textures, geometry or draw calls. Thirty project-authored seeded tree crowns
+vary height, aspect, lean, orientation, branches and leaf-card silhouettes, with
+varied alpha-tested shadows from the same baked geometry. Crowns stay stable
+across frames, resets and recycling; the existing 500m pool still repeats. Trunks,
+tree-island blockers and street layout remain unchanged. Crown variation adds no
+textures, materials, draw calls, vertices or per-frame resources. No foliage
+images are imported.
+
+The outdoor sky/ground gradient and broad sun are original procedural artwork,
+not a downloaded HDR or third-party room scene. Three.js PMREM filters this
+environment once per lighting instance. The neutral texture is reused while
+simulation-time weather adjusts its intensity, visible sky, sun, hemisphere fill
+and fog. Physically based daylight uses stabilized PCF shadows: 2048 x 2048 HIGH,
+1024 x 1024 BALANCED, off LOW; output uses ACES filmic tone mapping, exposure 0.95
+and sRGB. The project-authored camera cycles C: LOW CHASE -> ELEVATED -> COCKPIT.
+New runs and menu return reset the driving-camera selection to LOW CHASE,
+restoring the original settled eye 4.9m above ground and 9.5m behind the auto,
+targeting 1.05m above ground and 11m ahead (about 10.64-degree elevation).
+ELEVATED is 45 degrees with 10m look-ahead. Both exterior views follow auto heading
+with shortest-angle interpolation while staying upright through rollover.
+The home view is unchanged: 45-degree-azimuth front-quarter at 18-degree elevation.
+Exterior transitions are smooth; entering/leaving cockpit snaps. Motion pauses.
+
+The cockpit is original physical 3D geometry: two hands wrap the turning handlebar,
+with Anna's khaki or Akka's teal sleeves and rolled cuffs. Detailed PBR grips,
+levers/cables, gauges, a speed-driven needle, switches and key use existing actor
+surface maps. The open windshield has no glass plane obscuring the actual street.
+The eye follows actual auto yaw, suspension and tumble, not a screen overlay;
+exterior color/depth masking preserves the auto shadow. Geometry and both sleeve
+variants are cached; no new cockpit texture or external image is introduced.
+
+All ten delivery e-bike bodies are fixed light blue #70c9e2, including the four
+wrong-way bikes. The original unbranded electric twist-throttle step-through
+mopeds have integrated batteries, rear hub motors, black seats, brake levers/cables
+and both feet on fixed footrests. There are no pedals, chains, pedalling or Yulu
+logos. Bag colors/labels remain unchanged: four Tomato, three Krypto and three
+yellow/green ThinkIt bags. No imported vehicle model or new external image is used.
+No additional third-party asset license is introduced by these upgrades.
+
+Rear construction reference ONLY (not a bundled asset)
+https://commons.wikimedia.org/wiki/File:2023_Bajaj_RE_45_Compact.jpg
+This photograph was visually studied for general rear construction details.
+No image pixels or model from it are bundled or requested during play. The
+green/yellow procedural interpretation is original, not a branded replica.
+Recessed hatch louvers, hinges/shutlines, canopy seams/window welts and vertical
+lamp details use two cached draws / 3,748 triangles and one original generated
+64 x 128 lens-height map. The supplied player portrait, Kannada lettering and
+quote remain unchanged; this reference does not establish rights to that portrait.
+
+PlayerDamage deforms actual player-owned cloned metal vertices and normals;
+shared traffic geometry is not changed. Selective metal subdivision adds 6,740
+triangles, with twelve bounded impact records and one pooled scuff draw of up to
+144 triangles. Potholes add low wheel-arch mud/scuffs, not windshield cracks or
+metal crumpling. This is original cosmetic deformation, not soft-body physics,
+structural failure or engineering-grade crash simulation. The compact condition
+card (approximately 155px versus 199px high) retains its original SVG and five
+stage titles: an illustration of cumulative wear, not measured subsystem damage.
+It adds no downloaded imagery or new textures; full feedback survives visual
+ellipsis in hover titles and accessible announcements.
+
+User-supplied stock cockpit reference URL ONLY (not a bundled asset)
+https://as1.ftcdn.net/jpg/01/92/46/30/1000_F_192463009_XqQaABtyRdps3ybYpR9y4iNNobuE7DoU.jpg
+This stock image is not downloaded or bundled, and is not requested during play.
+Only the general open-front/narrow-pillar idea informs the original procedural
+cockpit, not copied pixels, logos or dashboard artwork. Providing the URL grants
+no redistribution rights to the stock image. This reference is separate from
+the bundled portrait and its unverified distribution permission below.
+
+User-supplied third-party photograph
+The user expressly provided this source URL:
+https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJd2hIC0g1NRWE4JYB0ob-1JNmPHMrd3XSr5QSwJzmOXx85_zo-rPZgv8&s=10
+The first photograph is restored at 345 x 352 pixels. Its local source asset is
+src/assets/shankar-nag-portrait.jpg; production asset names may be hashed.
+The intervening 443 x 451 photograph and its source are superseded.
+The restored photo remains on the player only, unchanged at 14,719 bytes, SHA-256
+972a93a80c248cabc8ae49af7d600a05d372006820163b946037468eec5bc842,
+without external image requests during play. Distribution permission for this
+photograph has not been verified.
+The publisher is responsible for verifying rights before redistribution. The
+Three.js/Cannon MIT and Noto Sans Kannada OFL licenses do not establish permission to
+distribute this photograph.
+
+User-supplied traffic image set (retrieved 2026-09-09)
+All seven exact requested source URLs follow. Sources 2/3/4 were successfully
+decoded with Pillow and visually checked; 1/5/6/7 returned HTTP 403 Forbidden.
+No bypass, alternate URL, substitution or failed-response asset was used.
+
+1. UNAVAILABLE: HTTP 403 Forbidden
+https://cf-images.assettype.com/tnm%2Fimport%2Fsites%2Fdefault%2Ffiles%2Fshankar_nag.jpg?w=1200&ar=40%3A21&auto=format%2Ccompress&ogImage=true&mode=crop&enlarge=true&overlay=false&overlay_position=bottom&overlay_width=100
+2. BUNDLED: monochrome portrait
+https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH5BNPGkw3JaNvexxAGSRDQCjSkKl73UHpN2OJCiCVFw&s
+3. BUNDLED: red/yellow fabric image
+https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtzkz4V-ATJ_wxFvrnAQ_pX8MSTdXJowYJgWO5q9pJDdoQdQKHSMIAMunE&s=10
+4. BUNDLED: person facing misty landscape
+https://www.entrepreneur.com/wp-content/uploads/sites/2/2014/10/1413823428-amazingly-free-stock-websites.jpg
+5. UNAVAILABLE: HTTP 403 Forbidden
+https://images.pexels.com/photos/6694114/pexels-photo-6694114.jpeg?cs=tinysrgb&dpr=1&w=500
+6. UNAVAILABLE: HTTP 403 Forbidden
+https://storage.needpix.com/rsynced_images/broken-heart-1207383_1280.png
+7. UNAVAILABLE: HTTP 403 Forbidden
+https://storage.needpix.com/rsynced_images/heart-48522_1280.png
+
+Bundled source files (production filenames may be hashed), dimensions, bytes,
+and SHA-256 hashes of bundled bytes:
+src/assets/traffic-photo-02.jpg: 202 x 250, 9,718 bytes
+ba08c590aa010707bad0ab30f32fb247af35a4fd784486a62dce7bcc168d165f
+src/assets/traffic-photo-03.jpg: 512 x 315, 11,337 bytes
+c8a4331b506376bdaec01fadf158faeb41e72b7a28ec8e5d18480b853ba3d064
+src/assets/traffic-photo-04.jpg: 512 x 342, 21,566 bytes
+1d4c5e9af49d09ea87bc8515340bbc3e6effdb6b30031d09c4bbf185e99ecab9
+Downloaded originals were respectively 202 x 250 / 7,585 bytes,
+706 x 435 / 10,894 bytes, and 2000 x 1334 / 129,063 bytes.
+Derivatives total 42,621 bytes: RGB, optimized progressive JPEG quality 85,
+Lanczos thumbnails maximum 512px without intentional cropping or stretching.
+No transparent source succeeded; both PNG requests were blocked, not flattened.
+
+All four traffic autos use seeded shuffled bags of the available local images:
+three distinct images before one necessary repeat. Seven available images would
+allow four distinct choices. New missions reshuffle existing models; assignment
+remains stable on frames/recycling. Menu uses the default simulation seed.
+Images fit the existing 0.48 x 0.49m frame using mesh scale with no extra draw.
+Cached textures/materials load lazily after OPEN GAME, once per available image,
+at most seven (three currently). No source URL is fetched at runtime; the player
+retains its separate original photo and centered 0.38m-wide placement.
+
+RIGHTS NOT VERIFIED for these traffic images. User-supplied URLs, thumbnail
+hosting, source-site names and articles about free stock images do not establish
+copyright ownership or redistribution rights. No blanket Creative Commons,
+public-domain or free-use claim is made. Verify image-specific copyright and
+any likeness/other permissions before publication. Software MIT and font OFL
+licenses do not grant rights to these images. No endorsement is claimed.
+
+Shop/delivery labels, including exactly Mysore Silk House, are user-supplied
+fictional names, not copied brand logos. No affiliation, sponsorship
+or endorsement is claimed. This asset inventory is not legal clearance or a
+guarantee of risk-free publication; publishers must review names and presentation.
+
+Noto Sans Kannada - complete copyright and SIL Open Font License
+
+Copyright 2022 The Noto Project Authors (https://github.com/notofonts/kannada)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded,
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+cannon-es 0.20.0 - MIT license
+Source: https://github.com/pmndrs/cannon-es
+The complete installed package LICENSE follows verbatim, including its ancestral
+cannon.js Authors attribution. Keep this notice with redistributed builds.
+Cannon supplies the mission's authoritative rigid-body world, three-wheel
+raycast suspension and sampled terrain contacts. Nearby traffic uses a bounded
+dynamic-body pool with AI force control; distant traffic remains planner-driven.
+Arcade roll-policy impulses and cosmetic body deformation are project code,
+not claims of engineering-grade physics or rights to any supplied photograph.
+
+/*
+ * Copyright (c) 2015 cannon.js Authors
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
