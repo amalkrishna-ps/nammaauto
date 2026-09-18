@@ -7,7 +7,8 @@ root. Prebuilt static game: no npm install, backend, database, web worker or API
 key required. Serve over HTTPS or localhost HTTP, not file://. Relative asset
 URLs support nested hosting. Retain THIRD-PARTY-NOTICES.txt and font notices.
 
-Requires a desktop browser with WebGL 2, hardware acceleration and a keyboard.
+Requires a recent desktop or mobile browser with WebGL 2 and hardware acceleration.
+Desktop keyboard controls and automatic on-screen multi-touch controls are supported.
 Permit JavaScript and WebGL when embedding. OPEN GAME loads 3D after the static
 preview. START MISSION starts directly: no username/name prompt or required setup.
 Anna (male driver, ♂) is the default. Optional home-screen Change Driver selects
@@ -30,10 +31,38 @@ including external backward pushes. This is not a world-Z clamp: forward driving
 after a U-turn can travel along -Z. HUD shows BRAKE while braking and R for reverse
 travel. The R key remains recovery (-100 points, no repair), not a gear selector.
 If no safe gap is available, the hint says "Hold SPACE and wait for traffic to
-clear". Space holds stopped; held S now reverses after stopping.
+clear" (or "Hold BRAKE" on touch devices). Space holds stopped; held S now
+reverses after stopping.
 C: LOW CHASE -> ELEVATED -> COCKPIT -> LOW CHASE during play.
 H: horn. M: mute. Escape: pause. Losing focus pauses play.
-Weather and camera labels sit TOP-LEFT. Mission, traffic queue/signal information,
+On mobile phones/tablets, hold LEFT / RIGHT to steer and DRIVE to
+accelerate; multiple fingers work together. REV brakes then reverses; BRAKE is
+stronger and holds stopped. Tap CAMERA, HORN or RECOVER (-100 points, no repair).
+Bottom-left has steering, HORN and RECOVER; bottom-right has pedals, CAMERA,
+PAUSE and SOUND. Buttons include visual icons and 12px labels, with 64px minimum
+width and 48px minimum height (larger pedals on typical phones).
+Controls appear only on mobile, not desktop or touchscreen laptops. Detection
+includes iPadOS desktop-site mode; viewport size alone never enables touch controls.
+Mobile gameplay requires LANDSCAPE. Starting upright opens a rotate prompt;
+turning upright during play PAUSES the timer and clears input. Rotate back and
+tap CONTINUE to start/resume. Menus/help remain available in portrait.
+Controls hide when not playing; touches clear on pause, app switching or rotation.
+Mobile devices start AUTO at BALANCED (1.0 pixel ratio cap, 1024-square sun shadows);
+desktop starts HIGH. AUTO still adapts; manual LOW is available for slower devices.
+Physics remains 60Hz. Actual rendering performance depends on hardware.
+Responsive layout covers the preview, home screen, driver chooser, route/help,
+gameplay, pause and results. Portrait uses a readable single-column menu;
+phone landscape places the introduction and mission actions side by side.
+Wider pause/results screens use two columns. Desktop content has fluid gutters
+and a 1600px width cap, leaving the 3D scene visible. Long menus/dialogs scroll
+without clipping content; close controls remain reachable. Rotation adapts the
+layout and camera without resetting progress, but mobile portrait pauses play.
+Larger mobile instruments: 40px timer, 26px score (24px in short landscapes),
+42px speed and 12px labels. Desktop uses a 48px timer, 30px score and 12-14px labels.
+Mobile score/condition sit upper-left, mission/signal upper-right, with speed
+and messages in the gap between the bottom controls. Short windows simplify
+secondary weather/destination text instead of shrinking essential numbers.
+On desktop, weather and camera labels sit TOP-LEFT. Mission, traffic queue/signal information,
 points pop-ups and driving hints remain in the RIGHT-EDGE stack, not the road center.
 Messages wrap without overlapping each other. Score/condition remain bottom-left
 and speed bottom-right; short windows use a compact speed readout.
@@ -324,8 +353,9 @@ not perfect zero penetration. Rounded terrain hulls allow less than 3cm corner
 envelope excess. Tests cover uneven roofs/sides, curbs, tile seams, real
 depressions, fast impacts, material/base metadata and frozen-wreck restoration.
 Handling/route and one-bus terrain benchmarks are opt-in and skipped by default.
-The approximately 29s clear drive, 90s deadline and 78px condition card are unchanged;
-the clear-route regression allows greater than 29 and less than 45 seconds.
+The approximately 29s clear drive and 90s deadline are unchanged; the clear-route
+regression allows greater than 29 and less than 45 seconds. The later readable
+HUD revision supersedes this collision revision's 78px condition card.
 
 Historical 2026-09-10 traffic stability validation covered a 25-second, 10-vehicle
 idle reproduction, including both motorcycle variants: four falls before that
@@ -558,10 +588,12 @@ CURRENT FEATURES
   by "Not the fastest way!". Powered or external local backward motion never triggers it. It hides
   when stopped, paused or on the home screen. No forced turn or wrong-way penalty;
   normal collision consequences and the mission deadline still apply.
-- Compact AUTO CONDITION card: 78px high, down from 155px, at 320px wide.
+- Readable AUTO CONDITION card: 92px high / 360px wide on desktop; 84px high /
+  224-280px wide on mobile, or 72px high in short landscapes. This supersedes
+  the previous 78px desktop card.
   The title, overall percentage, five-stage wear label and separate pothole/hit
   counts remain visible. The original progressive SVG auto geometry is retained
-  at 60 x 32px display size. Flavor text, gauge, remaining allowances and event
+  at 60 x 32px on wide desktop displays. Flavor text, gauge, remaining allowances and event
   note are visually hidden but screen-reader accessible; decorative pips are
   hidden visually and from assistive technology. The card's hover title includes
   the full event note and independent six potholes OR ten hits, not combined,
