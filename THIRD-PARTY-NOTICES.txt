@@ -9,8 +9,8 @@ Retain the download/license certificate and verify any track-specific conditions
 before distributing the game. Automated access to the source page was blocked;
 the supplied file's creator and license metadata were not independently verified.
 No authorship or MIT license is claimed for this recording. The game bundles the
-local file, processes it for spatial speaker playback, and loops different
-excerpts for traffic autos. It makes no runtime requests to Pixabay.
+local file, processes it for the player's cheap-speaker effect, and loops the
+full recording only for the player. It makes no runtime requests to Pixabay.
 
 ---------------------------------------------------------------------------
 

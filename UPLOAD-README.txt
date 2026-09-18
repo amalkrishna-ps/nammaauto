@@ -61,6 +61,15 @@ Desktop starts HIGH. Manual DPR/shadow presets remain available, but mobile
 MSAA stays off for the context lifetime. Physics remains 60Hz, with unchanged
 traction, traffic, hazards and mission rules. Actual FPS depends on hardware;
 render-budget reductions are not physical-device FPS measurements.
+The same fixed 44x44 SVG logo is used in the preview, menu, loading and gameplay;
+responsive layouts never reshape it or substitute font glyphs.
+Physics remains 60Hz, but duplicate draws between ticks on high-refresh displays
+are skipped. Menus/pause/results refresh at most 5Hz when unchanged, with immediate
+redraw on mode/quality/viewport/driver changes. Late assets still refresh.
+Traffic planning reuses per-tick blocker bounds and conservatively filters distant
+obstacles, without removing collision bodies or nearby hazards. Duplicate same-time
+actor updates are skipped. Only one camera-independent player music loop runs.
+These reduce rendering/audio/CPU work; actual frame rate remains device-dependent.
 Responsive layout covers the preview, home screen, driver chooser, route/help,
 gameplay, pause and results. Portrait uses a readable single-column menu;
 phone landscape places the introduction and mission actions side by side.
@@ -397,10 +406,10 @@ ACTOR MASS, NAVIGATION AND CONTACT OWNERSHIP
 Central actor-mass values in kg preserve vehicle tuning: auto/player 450,
 car/taxi 1300, bus 6500, truck/tanker 8500, scooter/motorcycle/e-bike 180,
 including riders/load. Organic masses: DOG 20, PEDESTRIAN 75, COW 450.
-Finite mass sets contact budgets; navigation still owns their kinematic poses.
+Pedestrian/cow finite mass sets contact budgets; navigation owns kinematic poses.
 These are NOT free-body ragdolls.
 
-Organic contact is ONE-WAY, VEHICLE-INITIATED and reduced-mass bounded. Pair budget:
+Pedestrian/cow contact is ONE-WAY, VEHICLE-INITIATED and reduced-mass bounded. Pair budget:
 vehicleMass x actorMass / (vehicleMass + actorMass) x closingSpeed x min(1, dt/0.08),
 shared across the pair's equations. Only vehicle normal closing speed above
 0.03m/s contributes. Actor gait, penetration correction, external-force RHS and
@@ -411,6 +420,13 @@ damage/penalties and the strictly >20km/h player-speed roll policy remain.
 Dogs still add no injury/wear policy. Locomotion cannot move vehicles; a vehicle
 driving into an actor still receives the finite reaction. Pooled equation
 overrides are restored after solving to preserve later hard-contact behavior.
+
+Dogs use SOLID vehicle-contact normals rather than the former 20kg impulse cap,
+which detected contacts but allowed cars to push through. Vehicle-initiated dog
+contacts retain bounded 2m/s penetration recovery to prevent held-throttle creep.
+A dog walking into a parked car cannot activate that push response. Dogs remain
+navigation-owned, non-injury actors. Materials, masses, raycast policy, other
+actor responses and physics timesteps are unchanged.
 
 Main refreshes reusable actorObstacles after world updates from player, traffic,
 construction, footpath solids and the accident-car blocker; both actor systems
@@ -824,20 +840,19 @@ CURRENT FEATURES
   after ENTER BENGALURU. Each auto adds one draw call; reassignments reuse resources
   without per-frame cache growth. Player rear photograph and quote are preserved.
 - Original synthesized engine, horns, potholes and collision sounds, not recordings.
-  Nearby horns vary in pitch, gain, pan and duration; at most four ambient voices
-  overlap. Pause and mute stop audio.
+  Only player effects are enabled; background vehicle horns are disabled.
+  Pause and mute stop audio.
 - Supplied cabin music: Auto music.mp3, from the owner-provided Pixabay source
   https://pixabay.com/music/beats-epic-indian-drums-beat-291301/
   It is bundled locally in assets/, never hotlinked. Keep the source's
   license/download certificate with project records; see THIRD-PARTY-NOTICES.txt.
-  The player speaker is mounted behind the driver seat at (0, 1.05, -0.2)m.
-  Camera-relative HRTF panning, inverse-distance rolloff, 150Hz high-pass,
-  7000Hz low-pass and 18% wet saturation create the cheap-speaker effect.
-  Nearby AI autos play different 12-second excerpts of the same recording
-  (not different songs), with explicit relative-velocity Doppler pitch shifts.
-  Mobile has at most two active AI speakers plus the player; desktop allows four
-  AI speakers. Short retirement fades can briefly overlap a replacement voice.
-  Music is prepared once as mono 24kHz; music does not add any scene draw calls.
+  Only the player's rickshaw plays music. The full track loops automatically,
+  with an 80ms seam crossfade, 150Hz high-pass, 7000Hz low-pass and 18% saturation.
+  Volume and pitch are identical in all camera views; camera switching and
+  recovery do not restart music. AI music and background vehicle horns are off.
+  One player voice replaces the old HRTF/Doppler/AI mix. A retiring player voice
+  can briefly finish its 40ms fade during a rapid pause/resume.
+  Music is prepared once as mono 24kHz; there are no per-frame music updates.
   Starting/resuming/unmuting unlocks audio. Pause/mute freezes music; new missions
   restart it. If loading fails, an on-screen error appears: sound off/on retries.
 - Every recovery attempt has screen feedback: mint AUTO RECOVERED on success,
@@ -848,11 +863,11 @@ CABIN MUSIC SETUP (SOURCE PROJECT)
 1. Keep Auto music.mp3 beside package.json; retain the source license certificate.
 2. On a fresh checkout run npm install, then npm run dev.
 3. ENTER BENGALURU -> START MISSION unlocks audio. Allow a moment for lazy decoding.
-4. Compare chase/elevated/cockpit views using C or the mobile camera icon.
-5. Pass AI autos to hear spatial balance, distance rolloff and Doppler changes.
+4. Switch chase/elevated/cockpit views using C or the mobile camera icon.
+5. Music stays at the same level and position in all views and loops at the end.
 6. M / sound toggles all audio. Pause or app switching freezes playback.
-7. Tune src/speaker-dsp.ts (filters/mix/rolloff) and src/spatial-music.ts
-   (mount, loop duration, sample rate, AI voice budget). Full steps: AUDIO-SETUP.md.
+7. Tune src/speaker-dsp.ts (filters/mix) and src/player-music.ts (sample rate/gain).
+   Full steps are in the source project's AUDIO-SETUP.md.
 8. npm run build rebuilds the ZIP with the MP3. Upload the complete archive;
    serve over HTTP(S), not file://. No external music network request is needed.
 - Pause freezes all simulation-driven behavior: traffic/U-turns, actors, dogs,
