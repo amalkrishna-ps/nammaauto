@@ -1,3 +1,19 @@
+MUSIC (SEPARATE FROM THE SOFTWARE LICENSES BELOW)
+
+The project owner supplied "Auto music.mp3" for the rickshaw cabin speakers.
+Supplied source: Epic Indian Drums Beat, Pixabay music item 291301
+https://pixabay.com/music/beats-epic-indian-drums-beat-291301/
+License reference: https://pixabay.com/service/license-summary/
+
+Retain the download/license certificate and verify any track-specific conditions
+before distributing the game. Automated access to the source page was blocked;
+the supplied file's creator and license metadata were not independently verified.
+No authorship or MIT license is claimed for this recording. The game bundles the
+local file, processes it for spatial speaker playback, and loops different
+excerpts for traffic autos. It makes no runtime requests to Pixabay.
+
+---------------------------------------------------------------------------
+
 Namma Auto includes Three.js 0.185.1, including PMREM environment filtering
 (MIT license).
 
@@ -200,7 +216,7 @@ three distinct images before one necessary repeat. Seven available images would
 allow four distinct choices. New missions reshuffle existing models; assignment
 remains stable on frames/recycling. Menu uses the default simulation seed.
 Images fit the existing 0.48 x 0.49m frame using mesh scale with no extra draw.
-Cached textures/materials load lazily after OPEN GAME, once per available image,
+Cached textures/materials load lazily after ENTER BENGALURU, once per available image,
 at most seven (three currently). No source URL is fetched at runtime; the player
 retains its separate original photo and centered 0.38m-wide placement.
 

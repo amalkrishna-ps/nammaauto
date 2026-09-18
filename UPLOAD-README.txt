@@ -9,10 +9,10 @@ URLs support nested hosting. Retain THIRD-PARTY-NOTICES.txt and font notices.
 
 Requires a recent desktop or mobile browser with WebGL 2 and hardware acceleration.
 Desktop keyboard controls and automatic on-screen multi-touch controls are supported.
-Permit JavaScript and WebGL when embedding. OPEN GAME loads 3D after the static
+Permit JavaScript and WebGL when embedding. ENTER BENGALURU loads 3D after the static
 preview. START MISSION starts directly: no username/name prompt or required setup.
-Anna (male driver, ♂) is the default. Optional home-screen Change Driver selects
-Anna or Akka (female driver, ♀); SAVE DRIVER updates the actual model and preview
+Anna (♂) is the default. Optional home-screen Change Driver selects
+Anna or Akka (♀); SAVE DRIVER updates the actual model and preview
 without starting a mission. Starting unlocks audio; retries reuse the session-only
 driver choice. Optional personal-best storage contains only the score.
 No analytics or accounts. A BANGALORE DRIVING EXPERIENCE sits beneath the large
@@ -35,21 +35,32 @@ clear" (or "Hold BRAKE" on touch devices). Space holds stopped; held S now
 reverses after stopping.
 C: LOW CHASE -> ELEVATED -> COCKPIT -> LOW CHASE during play.
 H: horn. M: mute. Escape: pause. Losing focus pauses play.
-On mobile phones/tablets, hold LEFT / RIGHT to steer and DRIVE to
-accelerate; multiple fingers work together. REV brakes then reverses; BRAKE is
-stronger and holds stopped. Tap CAMERA, HORN or RECOVER (-100 points, no repair).
-Bottom-left has steering, HORN and RECOVER; bottom-right has pedals, CAMERA,
-PAUSE and SOUND. Buttons include visual icons and 12px labels, with 64px minimum
-width and 48px minimum height (larger pedals on typical phones).
+On mobile phones/tablets, bottom-left has LEFT / RIGHT arrows; bottom-right has
+accelerator/brake pedal icons and a vertical D-R gear lever. Slide down to R to
+reverse or up to D for forward, then hold ACCEL. Tapping the slider track also
+selects gear. Shifting releases accelerator touches: press the pedal again.
+Selecting gear alone never moves the auto. BRAKE stops and holds in either gear,
+overriding the accelerator without reversing. Multiple fingers work together.
+The top row has icon-only HORN, RECOVER (-100 points, no repair), CAMERA, PAUSE
+and SOUND, with accessible names/tooltips. Driving buttons have 12px labels,
+64px minimum width and 96px height (80px on short phones); top icons and the
+gear slider have at least 48x48px touch targets.
 Controls appear only on mobile, not desktop or touchscreen laptops. Detection
 includes iPadOS desktop-site mode; viewport size alone never enables touch controls.
 Mobile gameplay requires LANDSCAPE. Starting upright opens a rotate prompt;
 turning upright during play PAUSES the timer and clears input. Rotate back and
 tap CONTINUE to start/resume. Menus/help remain available in portrait.
 Controls hide when not playing; touches clear on pause, app switching or rotation.
-Mobile devices start AUTO at BALANCED (1.0 pixel ratio cap, 1024-square sun shadows);
-desktop starts HIGH. AUTO still adapts; manual LOW is available for slower devices.
-Physics remains 60Hz. Actual rendering performance depends on hardware.
+Pause preserves gear; new missions start in D. Desktop keyboard controls are unchanged.
+Mobile devices start AUTO at MOBILE: DPR cap 0.85, real-time sun shadows and
+context MSAA off, and 240 rain segments instead of 720. Sustained slow frames
+lower AUTO to LEAN: DPR cap 0.65 and 120 rain segments. Recovery never raises
+mobile AUTO above MOBILE. These caps use about 28% / 58% fewer framebuffer pixels
+than the previous mobile DPR 1.0, before the savings from shadows/MSAA.
+Desktop starts HIGH. Manual DPR/shadow presets remain available, but mobile
+MSAA stays off for the context lifetime. Physics remains 60Hz, with unchanged
+traction, traffic, hazards and mission rules. Actual FPS depends on hardware;
+render-budget reductions are not physical-device FPS measurements.
 Responsive layout covers the preview, home screen, driver chooser, route/help,
 gameplay, pause and results. Portrait uses a readable single-column menu;
 phone landscape places the introduction and mission actions side by side.
@@ -378,7 +389,7 @@ If stuck on a side/roof, R still resets pose/momentum for 100 points without
 repairs. SAT remains for AI gap planning/recovery and
 the legacy test adapter, not active player collision response. The legacy
 29 + 61 constants still define the 90s deadline, not measured engine travel time.
-The initial static preview imports neither Three.js nor Cannon: OPEN GAME lazily
+The initial static preview imports neither Three.js nor Cannon: ENTER BENGALURU lazily
 loads the application, and START MISSION creates its physics world. The menu
 does not initialize a physics world; mission replacement/menu return disposes it.
 
@@ -447,23 +458,29 @@ human playtest or supported numerical before/after comparison for the current
 fixes. Historical steering/CPU/GPU evidence remains separate.
 
 AUTO GRAPHICS AND HISTORICAL GPU COMPARISON - 2026-09-13
-Graphics defaults to AUTO at HIGH. Button cycle: AUTO -> HIGH -> SMOOTH -> BALANCED
+Graphics defaults to AUTO at HIGH on desktop, MOBILE on phones/tablets.
+Button cycle: AUTO -> HIGH -> SMOOTH -> BALANCED
 -> LOW. Explicit presets are manual and do not adapt.
 
 AUTO level               DPR cap   Sun shadow map
-HIGH (initial)           1.5       2048 x 2048
+HIGH (desktop initial)   1.5       2048 x 2048
 SMOOTH                   1.25      2048 x 2048
-BALANCED (AUTO floor)    1.0       1024 x 1024
+BALANCED (desktop floor) 1.0       1024 x 1024
+MOBILE (mobile initial)  0.85      Off
+LEAN (mobile floor)      0.65      Off
 
 Actual DPR is capped by the device DPR too. Manual LOW remains available at a
-0.8 cap with shadows off; AUTO never selects LOW. Four consecutive ~500ms windows
+0.8 cap with shadows off; desktop AUTO never selects LOW. Mobile AUTO uses the
+internal BALANCED/LOW levels, labelled MOBILE/LEAN, with 240/120 rain segments;
+desktop and manual modes retain 720. Four consecutive ~500ms windows
 averaging >22ms, with at least 50% slow frames, lower one step after roughly 2s.
 Twenty windows averaging <18ms, with at least 90% fast frames, raise one step
 after roughly 10s. Isolated hitches do not qualify. Paused, menu, ended, hidden
 and manual frames are excluded; transitions clear evidence, not the retained level.
 
-Automatic changes affect DRAWING-BUFFER AND SHADOW-MAP RESOLUTION, not source
-assets, texture resolution, geometry, render distance or physics ticks. SMOOTH
+Automatic changes affect DRAWING-BUFFER AND SHADOW-MAP RESOLUTION, plus cosmetic
+rain draw/upload budgets on mobile, not source assets, texture resolution, world
+geometry, render distance or physics ticks. SMOOTH
 keeps HIGH lighting/shadows; AUTO trades pixel/shadow detail for lower render cost.
 
 Historical browser comparison, before the brake-only/traffic fixes and later
@@ -787,7 +804,7 @@ CURRENT FEATURES
   Forbidden, with no bypass or substitution. All three appear before a necessary
   repeat; four unique selections are supported if seven become available.
   Menu uses the default seed. Full images fit within 0.48 x 0.49m without stretch,
-  crop or extra draws. Local textures/materials load only after OPEN GAME, once
+  crop or extra draws. Local textures/materials load only after ENTER BENGALURU, once
   per available source, three now and at most seven. No remote runtime fetching.
   The player's original photograph is unchanged and separate from traffic.
   The player's photo is centered at x=0, y=1.48m and is 0.38m wide.
@@ -804,11 +821,40 @@ CURRENT FEATURES
   first then traffic autos, without repeats among the first five. New missions
   reshuffle; frames and recycling preserve assignments. One shared 512 x 640
   atlas, one material and ten shared two-triangle badge geometries load lazily
-  after OPEN GAME. Each auto adds one draw call; reassignments reuse resources
+  after ENTER BENGALURU. Each auto adds one draw call; reassignments reuse resources
   without per-frame cache growth. Player rear photograph and quote are preserved.
 - Original synthesized engine, horns, potholes and collision sounds, not recordings.
   Nearby horns vary in pitch, gain, pan and duration; at most four ambient voices
   overlap. Pause and mute stop audio.
+- Supplied cabin music: Auto music.mp3, from the owner-provided Pixabay source
+  https://pixabay.com/music/beats-epic-indian-drums-beat-291301/
+  It is bundled locally in assets/, never hotlinked. Keep the source's
+  license/download certificate with project records; see THIRD-PARTY-NOTICES.txt.
+  The player speaker is mounted behind the driver seat at (0, 1.05, -0.2)m.
+  Camera-relative HRTF panning, inverse-distance rolloff, 150Hz high-pass,
+  7000Hz low-pass and 18% wet saturation create the cheap-speaker effect.
+  Nearby AI autos play different 12-second excerpts of the same recording
+  (not different songs), with explicit relative-velocity Doppler pitch shifts.
+  Mobile has at most two active AI speakers plus the player; desktop allows four
+  AI speakers. Short retirement fades can briefly overlap a replacement voice.
+  Music is prepared once as mono 24kHz; music does not add any scene draw calls.
+  Starting/resuming/unmuting unlocks audio. Pause/mute freezes music; new missions
+  restart it. If loading fails, an on-screen error appears: sound off/on retries.
+- Every recovery attempt has screen feedback: mint AUTO RECOVERED on success,
+  amber RECOVERY BLOCKED if there is no safe gap. It never captures touches and
+  honors reduced-motion preferences.
+
+CABIN MUSIC SETUP (SOURCE PROJECT)
+1. Keep Auto music.mp3 beside package.json; retain the source license certificate.
+2. On a fresh checkout run npm install, then npm run dev.
+3. ENTER BENGALURU -> START MISSION unlocks audio. Allow a moment for lazy decoding.
+4. Compare chase/elevated/cockpit views using C or the mobile camera icon.
+5. Pass AI autos to hear spatial balance, distance rolloff and Doppler changes.
+6. M / sound toggles all audio. Pause or app switching freezes playback.
+7. Tune src/speaker-dsp.ts (filters/mix/rolloff) and src/spatial-music.ts
+   (mount, loop duration, sample rate, AI voice budget). Full steps: AUDIO-SETUP.md.
+8. npm run build rebuilds the ZIP with the MP3. Upload the complete archive;
+   serve over HTTP(S), not file://. No external music network request is needed.
 - Pause freezes all simulation-driven behavior: traffic/U-turns, actors, dogs,
   weather, temperature and animation. A mission restart resets all gameplay
   systems and seeded state. R only recovers; it does not restart or repair.
